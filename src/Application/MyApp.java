@@ -1,8 +1,10 @@
 package Application;
 
+import Application.Model.APIGetRequest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -33,6 +35,7 @@ public class MyApp extends Application {
 
         setIcon();
         loadMainScene();
+        showView("WelcomeView");
         primaryStage.show();
     }
 
@@ -53,6 +56,7 @@ public class MyApp extends Application {
     }
 
     public void showView(String viewName) {
+
         String newView = "/Application/View/" + viewName + ".fxml";
 
         borderPane.getChildren().remove(borderPane.getCenter());
@@ -71,4 +75,11 @@ public class MyApp extends Application {
         borderPane.setCenter(pane);
     }
 
+    public void showWarning(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }
