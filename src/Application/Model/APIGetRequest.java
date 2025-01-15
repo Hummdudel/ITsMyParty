@@ -1,6 +1,7 @@
 package Application.Model;
 
 import Application.MyApp;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,7 +16,7 @@ public class APIGetRequest {
 
     private static final String apiKey = "?api_key=f2cbc621198d6de13d91092037cd8716";
 
-    public static void getTrack(String queryString, String... additionalInformation) {
+    public static Track getTrack(String queryString, String... additionalInformation) {
 
         try {
             String apiUrl = "https://api.musicdb.io/v1/" + queryString + apiKey;
@@ -42,8 +43,16 @@ public class APIGetRequest {
                 }
                 in.close();
 
-                // Hier kannst du die Antwort weiterverarbeiten
-                System.out.println("Antwort: " + response.toString());
+                Track track = new Track();
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                track.setName(jsonResponse.getString("name"));
+                track.setSlug(jsonResponse.getString("slug"));
+                track.setDuration(jsonResponse.getString("duration"));
+                JSONObject album = jsonResponse.getJSONObject("album");
+                JSONObject artist = album.getJSONObject("artist");
+                track.setArtist(artist.getString("name"));
+                return track;
+
             } else {
                 System.out.println("GET-Anfrage fehlgeschlagen: " + responseCode);
                 /*header = "API Query";
@@ -57,6 +66,8 @@ public class APIGetRequest {
             content = exception.getMessage();
             MyApp.instance.showWarning(title, header, content);*/
         }
+
+        return null;
 
     }
 

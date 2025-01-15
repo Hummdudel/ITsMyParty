@@ -7,23 +7,26 @@ public class Track {
     private int id;
     private String name;
     private String slug;
+    private String artist;
     private String duration;
     private int seconds;
 
 
     // Constructor
 
-    public Track(int id, String name, String slug, String duration) {
+    public Track(int id, String name, String slug, String artist, String duration) {
         this.id = id;
         this.name = name;
         this.slug = slug;
+        this.artist = artist;
         this.duration = duration;
         seconds = durationToSeconds(duration);
     }
 
-    public Track(String name, String slug, String duration) {
+    public Track(String name, String slug, String artist, String duration) {
         this.name = name;
         this.slug = slug;
+        this.artist = artist;
         this.duration = duration;
         seconds = durationToSeconds(duration);
     }
@@ -48,6 +51,14 @@ public class Track {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public String getDuration() {
@@ -80,6 +91,13 @@ public class Track {
     public int durationToSeconds(String duration) {
         String[] parts = duration.split(":");
         return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+    }
+
+    public void showdetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Slug: " + slug);
+        System.out.println("Artist: " + artist);
+        System.out.println("Duration: " + duration);
     }
 
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.SearchableComboBox?>
+
+
+<AnchorPane prefHeight="645.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SearchController">
+   <children>
+      <SearchableComboBox fx:id="searchTrack" layoutX="118.0" layoutY="147.0" prefHeight="26.0" prefWidth="319.0" />
+   </children>
+</AnchorPane>
