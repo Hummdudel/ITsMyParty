@@ -98,6 +98,7 @@ public class Track {
         System.out.println("Slug: " + slug);
         System.out.println("Artist: " + artist);
         System.out.println("Duration: " + duration);
+        System.out.println("Seconds: " + seconds);
     }
 
 }

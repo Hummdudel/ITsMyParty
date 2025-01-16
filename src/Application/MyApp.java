@@ -35,7 +35,7 @@ public class MyApp extends Application {
 
         setIcon();
         loadMainScene();
-        showView("WelcomeView");
+        showView("SearchView");
         primaryStage.show();
     }
 

@@ -5,11 +5,11 @@ import Application.Model.Track;
 
 public class Launcher {
     public static void main(String[] args) {
-        // MyApp.launch(MyApp.class, args);
+        MyApp.launch(MyApp.class, args);
 
-        Track track = new Track();
-        track = APIGetRequest.getTrack("artist/new-model-army/track/51st-state", "artist,album");
-        track.showdetails();
+        /*Track track = new Track();
+        track = APIGetRequest.getTrack("artist/new-model-army/track/51st-state");
+        track.showdetails();*/
 
     }
 }
