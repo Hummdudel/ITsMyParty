@@ -9,11 +9,20 @@
 
 <AnchorPane prefHeight="645.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SearchController">
    <children>
-      <TextField fx:id="textSearchTrack" layoutX="120.0" layoutY="100.0" onKeyPressed="#handleEnterPressed" prefHeight="26.0" prefWidth="318.0" />
-      <Label layoutX="70.0" layoutY="105.0" text="Track" />
-      <TextField fx:id="textSearchArtist" layoutX="120.0" layoutY="180.0" prefHeight="26.0" prefWidth="318.0" />
-      <Label layoutX="70.0" layoutY="185.0" text="Artist" />
-      <Button fx:id="buttonSearch" layoutX="450.0" layoutY="100.0" mnemonicParsing="false" onAction="#onButtonSearchClick" text="Search" />
+      <Label layoutX="20.0" layoutY="105.0" text="Track" />
+      <TextField fx:id="textSearchTrack" layoutX="70.0" layoutY="100.0" onKeyPressed="#handleEnterPressed" prefHeight="26.0" prefWidth="318.0" />
+      <Button fx:id="buttonClearTrackSearch" layoutX="400.0" layoutY="100.0" mnemonicParsing="false" onAction="#onButtonClearTrackSearchClick" text="X" />
+      <Button fx:id="buttonTrackSearch" layoutX="440.0" layoutY="100.0" mnemonicParsing="false" onAction="#onButtonTrackSearchClick" text="Search" />
+      <Label layoutX="540.0" layoutY="106.0" text=" Filter Artist" />
+      <TextField fx:id="textFilterArtist" layoutX="620.0" layoutY="100.0" prefHeight="26.0" prefWidth="318.0" />
+      <Button fx:id="buttonClearArtist" layoutX="950.0" layoutY="100.0" mnemonicParsing="false" onAction="#onButtonClearArtistClick" text="X" />
+      <Label layoutX="20.0" layoutY="189.0" text="Artist" />
+      <TextField fx:id="textSearchArtist" layoutX="70.0" layoutY="184.0" onKeyPressed="#handleEnterPressed" prefHeight="26.0" prefWidth="318.0" />
+      <Button fx:id="buttonClearArtistSearch" layoutX="400.0" layoutY="184.0" mnemonicParsing="false" onAction="#onButtonClearArtistSearchClick" text="X" />
+      <Button fx:id="buttonArtistSearch" layoutX="440.0" layoutY="184.0" mnemonicParsing="false" onAction="#onButtonArtistSearchClick" text="Search" />
+      <Label layoutX="540.0" layoutY="190.0" text=" Filter Track" />
+      <TextField fx:id="textFilterTrack" layoutX="620.0" layoutY="184.0" prefHeight="26.0" prefWidth="318.0" />
+      <Button fx:id="buttonClearTrack" layoutX="950.0" layoutY="184.0" mnemonicParsing="false" onAction="#onButtonClearTrackClick" text="X" />
       <TableView fx:id="tableTracks" layoutX="15.0" layoutY="280.0" prefHeight="350.0" prefWidth="970.0">
         <columns>
           <TableColumn fx:id="name" prefWidth="280.0" text="Name" />

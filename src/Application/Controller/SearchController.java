@@ -17,7 +17,9 @@ import java.util.ArrayList;
 
 public class SearchController {
     public TextField textSearchTrack;
+    public TextField textFilterArtist;
     public TextField textSearchArtist;
+    public TextField textFilterTrack;
 
     public TableView<Track> tableTracks;
     public TableColumn<Track, String> name;
@@ -41,10 +43,11 @@ public class SearchController {
         // Bind ObservableList to TableView
         tableTracks.setItems(trackList);
 
-        textSearchArtist.textProperty().addListener((observable) -> filterArtist());
+        textFilterArtist.textProperty().addListener((observable) -> filterArtist());
+        textFilterTrack.textProperty().addListener((observable) -> filterTrack());
     }
 
-    public void fillTable() {
+    public void fillTableFromTrackSearch() {
 
         ArrayList<Track> trackList = new ArrayList<>();
 
@@ -58,8 +61,22 @@ public class SearchController {
         }
     }
 
+    public void fillTableFromArtistSearch() {
+
+        ArrayList<Track> trackList = new ArrayList<>();
+
+        if (!(textSearchArtist.getText().equals(""))) {
+            String artistName =  textSearchArtist.getText();
+
+            trackList = APIGetRequest.getArtistTrackList(artistName);
+
+            this.trackList.clear();
+            this.trackList.addAll(trackList);
+        }
+    }
+
     public void filterArtist() {
-        String keyword = textSearchArtist.getText();
+        String keyword = textFilterArtist.getText();
 
         if (keyword.equals("")) {
             tableTracks.setItems(trackList);
@@ -71,18 +88,61 @@ public class SearchController {
                     filteredData.add(track);
                 }
             }
-
             tableTracks.setItems(filteredData);
         }
     }
 
-    public void onButtonSearchClick(ActionEvent actionEvent) {
-        fillTable();
+    public void filterTrack() {
+        String keyword = textFilterTrack.getText();
+
+        if (keyword.equals("")) {
+            tableTracks.setItems(trackList);
+        }
+        else {
+            ObservableList<Track> filteredData = FXCollections.observableArrayList();
+            for (Track track : trackList) {
+                if (track.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredData.add(track);
+                }
+            }
+            tableTracks.setItems(filteredData);
+        }
     }
 
     public void handleEnterPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
-            fillTable();
+            if (keyEvent.getSource() == textSearchTrack) {
+                fillTableFromTrackSearch();
+            }
+            else if (keyEvent.getSource() == textSearchArtist) {
+                fillTableFromArtistSearch();
+            }
         }
+    }
+
+    public void onButtonTrackSearchClick(ActionEvent actionEvent) {
+        fillTableFromTrackSearch();
+    }
+
+    public void onButtonClearArtistClick(ActionEvent actionEvent) {
+        textFilterArtist.setText("");
+    }
+
+    public void onButtonClearTrackSearchClick(ActionEvent actionEvent) {
+        textFilterArtist.setText("");
+        textSearchTrack.setText("");
+    }
+
+    public void onButtonClearArtistSearchClick(ActionEvent actionEvent) {
+        textFilterTrack.setText("");
+        textSearchArtist.setText("");
+    }
+
+    public void onButtonArtistSearchClick(ActionEvent actionEvent) {
+        fillTableFromArtistSearch();
+    }
+
+    public void onButtonClearTrackClick(ActionEvent actionEvent) {
+        textFilterTrack.setText("");
     }
 }
