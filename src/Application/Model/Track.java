@@ -8,6 +8,7 @@ public class Track {
     private String name;
     private String slug;
     private String artist;
+    private String album;
     private String duration;
     private int seconds;
 
@@ -23,10 +24,29 @@ public class Track {
         seconds = durationToSeconds(duration);
     }
 
+    public Track(int id, String name, String slug, String artist, String album, String duration) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.artist = artist;
+        this.album = album;
+        this.duration = duration;
+        seconds = durationToSeconds(duration);
+    }
+
     public Track(String name, String slug, String artist, String duration) {
         this.name = name;
         this.slug = slug;
         this.artist = artist;
+        this.duration = duration;
+        seconds = durationToSeconds(duration);
+    }
+
+    public Track(String name, String slug, String artist, String album, String duration) {
+        this.name = name;
+        this.slug = slug;
+        this.artist = artist;
+        this.album = album;
         this.duration = duration;
         seconds = durationToSeconds(duration);
     }
@@ -59,6 +79,14 @@ public class Track {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public String getDuration() {

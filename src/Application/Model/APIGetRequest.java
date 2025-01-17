@@ -110,8 +110,9 @@ public class APIGetRequest {
                         String slug = trackObject.getString("slug");
                         String duration = trackObject.getString("duration");
                         String artist = trackObject.getJSONObject("album").getJSONObject("artist").getString("name");
+                        String album = trackObject.getJSONObject("album").getString("name");
 
-                        Track track = new Track(name, slug, artist, duration);
+                        Track track = new Track(name, slug, artist, album, duration);
                         trackList.add(track);
                     }
                 }

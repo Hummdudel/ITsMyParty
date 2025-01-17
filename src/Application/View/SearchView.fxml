@@ -9,16 +9,17 @@
 
 <AnchorPane prefHeight="645.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SearchController">
    <children>
-      <TextField fx:id="textSearchTrack" layoutX="165.0" layoutY="153.0" prefHeight="26.0" prefWidth="318.0" />
-      <Label layoutX="165.0" layoutY="192.0" text="Track" />
-      <TextField fx:id="textSearchArtist" layoutX="529.0" layoutY="153.0" prefHeight="26.0" prefWidth="318.0" />
-      <Label layoutX="529.0" layoutY="192.0" text="Artist" />
-      <Button fx:id="buttonSearch" layoutX="165.0" layoutY="263.0" mnemonicParsing="false" onAction="#onButtonSearchClick" text="Search" />
-      <TableView fx:id="tableTracks" layoutX="165.0" layoutY="323.0" prefHeight="293.0" prefWidth="688.0">
+      <TextField fx:id="textSearchTrack" layoutX="120.0" layoutY="100.0" onKeyPressed="#handleEnterPressed" prefHeight="26.0" prefWidth="318.0" />
+      <Label layoutX="70.0" layoutY="105.0" text="Track" />
+      <TextField fx:id="textSearchArtist" layoutX="120.0" layoutY="180.0" prefHeight="26.0" prefWidth="318.0" />
+      <Label layoutX="70.0" layoutY="185.0" text="Artist" />
+      <Button fx:id="buttonSearch" layoutX="450.0" layoutY="100.0" mnemonicParsing="false" onAction="#onButtonSearchClick" text="Search" />
+      <TableView fx:id="tableTracks" layoutX="15.0" layoutY="280.0" prefHeight="350.0" prefWidth="970.0">
         <columns>
-          <TableColumn fx:id="name" prefWidth="266.0" text="Name" />
-          <TableColumn fx:id="artist" prefWidth="298.0" text="Artist" />
-            <TableColumn fx:id="duration" prefWidth="123.0" text="Duration" />
+          <TableColumn fx:id="name" prefWidth="280.0" text="Name" />
+          <TableColumn fx:id="artist" prefWidth="280.0" text="Artist" />
+            <TableColumn fx:id="album" prefWidth="320.0" text="Album" />
+            <TableColumn fx:id="duration" prefWidth="70.0" text="Duration" />
         </columns>
       </TableView>
    </children>

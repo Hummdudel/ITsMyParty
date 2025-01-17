@@ -10,58 +10,79 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 
 public class SearchController {
     public TextField textSearchTrack;
     public TextField textSearchArtist;
+
     public TableView<Track> tableTracks;
     public TableColumn<Track, String> name;
     public TableColumn<Track, String> artist;
+    public TableColumn<Track, String> album;
     public TableColumn<Track, String> duration;
 
     private ObservableList<Track> trackList;
 
     @FXML
     public void initialize() {
-        // Setze die Zellwertfabrik für jede Spalte
+        // Set die CellValueFactory for each column
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        album.setCellValueFactory(new PropertyValueFactory<>("album"));
         duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
-        // Initialisiere die ObservableList
+        // Initialize ObservableList
         trackList = FXCollections.observableArrayList();
 
-        // Binde die ObservableList an die TableView
+        // Bind ObservableList to TableView
         tableTracks.setItems(trackList);
+
+        textSearchArtist.textProperty().addListener((observable) -> filterArtist());
     }
 
-
-    public void onButtonSearchClick(ActionEvent actionEvent) {
+    public void fillTable() {
 
         ArrayList<Track> trackList = new ArrayList<>();
 
         if (!(textSearchTrack.getText().equals(""))) {
             String trackName =  textSearchTrack.getText();
 
-            if (!(textSearchArtist.getText().equals(""))) {
-                String artistName = textSearchArtist.getText();
+            trackList = APIGetRequest.getTrackList(trackName);
 
-                Track track = APIGetRequest.getTrack(trackName, artistName);
-                track.showdetails();
+            this.trackList.clear();
+            this.trackList.addAll(trackList);
+        }
+    }
+
+    public void filterArtist() {
+        String keyword = textSearchArtist.getText();
+
+        if (keyword.equals("")) {
+            tableTracks.setItems(trackList);
+        }
+        else {
+            ObservableList<Track> filteredData = FXCollections.observableArrayList();
+            for (Track track : trackList) {
+                if (track.getArtist().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredData.add(track);
+                }
             }
-            else {
-                trackList = APIGetRequest.getTrackList(trackName);
 
-//                for (Track track : trackList) {
-//                    track.showdetails();
-//                  }
+            tableTracks.setItems(filteredData);
+        }
+    }
 
-                this.trackList.clear();
-                this.trackList.addAll(trackList);
+    public void onButtonSearchClick(ActionEvent actionEvent) {
+        fillTable();
+    }
 
-            }
+    public void handleEnterPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            fillTable();
         }
     }
 }
