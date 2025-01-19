@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="645.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.PlaylistController">
+   <children>
+      <Label layoutX="20.0" layoutY="55.0" text="Playlist" />
+      <ComboBox fx:id="comboBoxPlaylist" layoutX="85.0" layoutY="50.0" prefHeight="26.0" prefWidth="291.0" />
+      <Label layoutX="448.0" layoutY="55.0" text="Tracks:" />
+      <Label fx:id="labelNumberOfTracks" layoutX="540.0" layoutY="55.0" prefHeight="17.0" prefWidth="40.0" />
+      <Label layoutX="448.0" layoutY="85.0" text="Duration:" />
+      <Label fx:id="labelPlaylistDuration" layoutX="540.0" layoutY="85.0" prefHeight="17.0" prefWidth="60.0" />
+      <TableView fx:id="tableTracks" layoutY="140.0" prefHeight="505.0" prefWidth="1000.0">
+        <columns>
+          <TableColumn fx:id="track" prefWidth="350.0" text="Track" />
+          <TableColumn fx:id="artist" minWidth="0.0" prefWidth="350.0" text="Artist" />
+            <TableColumn fx:id="duration" prefWidth="150.0" text="Duration" />
+            <TableColumn fx:id="priority" prefWidth="84.0" text="Priority" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

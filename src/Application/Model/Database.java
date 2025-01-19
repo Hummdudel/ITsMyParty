@@ -1,6 +1,8 @@
 package Application.Model;
 
 import Application.MyApp;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 
@@ -38,6 +40,7 @@ public class Database {
     public static void createTrack(Track track) {
 
         String sql = "{CALL Create_Track(?, ?, ?, ?)}";
+        connect();
 
         try {
             callableStatement = connection.prepareCall(sql);
@@ -45,17 +48,24 @@ public class Database {
             callableStatement.setString(2, track.getArtist());
             callableStatement.setString(3, track.getSlug());
             callableStatement.setString(4, track.getDuration());
+            callableStatement.execute();
 
-
+            System.out.println("Track " + track.getName() + " wurde erfolgreich angelegt!");
         }
         catch (SQLException exception) {
-
+            header = "Create Track";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
         }
     }
 
     public static void createPlaylist(String name) {
 
-        String sql = "{CALL CreatePlaylist(?)}";
+        String sql = "{CALL Create_Playlist(?)}";
+        connect();
 
         try {
             callableStatement = connection.prepareCall(sql);
@@ -69,9 +79,61 @@ public class Database {
             content = exception.getMessage();
             MyApp.instance.showWarning(title, header, content);
         }
-
+        finally {
+            disconnect();
+        }
     }
 
+    public static void addTrackToPlaylist(Track track, Playlist playlist) {
+        String sql = "{CALL Add_Track_to_Playlist(?, ?)}";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.setInt(1, track.getId());
+            callableStatement.setInt(2, playlist.getId());
+        } catch (SQLException exception) {
+            header = "Create Playlist";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+    }
+
+    // Read
+
+    public static ObservableList<Playlist> readAllPlaylists() {
+        String sql = "{CALL Read_All_Playlists()}";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            ObservableList<Playlist> playlistList = FXCollections.observableArrayList();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+
+                Playlist playlist = new Playlist(id, name);
+                playlistList.add(playlist);
+            }
+            return playlistList;
+        }
+        catch (SQLException exception) {
+            header = "Read All Playlists";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
+        }
+        return null;
+    }
+
+    // Update
+
+    // Delete
 
 
     // 4. Disconnect from Database
