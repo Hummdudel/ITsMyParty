@@ -1,21 +1,25 @@
 package Application.Controller;
 
 import Application.Model.APIGetRequest;
+import Application.Model.Database;
+import Application.Model.Playlist;
 import Application.Model.Track;
+import Application.MyApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 
 import java.util.ArrayList;
 
 public class SearchController {
+    public ComboBox<String> comboBoxPlaylist = new ComboBox<>();
+
     public TextField textSearchTrack;
     public TextField textFilterArtist;
     public TextField textSearchArtist;
@@ -29,8 +33,20 @@ public class SearchController {
 
     private ObservableList<Track> trackList;
 
+    private ObservableList<Playlist> playlistList;
+
     @FXML
     public void initialize() {
+
+        playlistList = Database.readAllPlaylists();
+        fillComboBoxWithPlaylistNames();
+
+        if (MyApp.loadedPlaylist != null) {
+            comboBoxPlaylist.setValue(MyApp.loadedPlaylist.getName());
+        }
+
+        comboBoxPlaylist.setOnAction(event -> handleComboBoxSelection());
+
         // Set die CellValueFactory for each column
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
@@ -45,6 +61,59 @@ public class SearchController {
 
         textFilterArtist.textProperty().addListener((observable) -> filterArtist());
         textFilterTrack.textProperty().addListener((observable) -> filterTrack());
+
+        // Context menu for Table
+
+//        ContextMenu contextMenu = new ContextMenu();
+//
+//        MenuItem option1 = new MenuItem("Add Track");
+//        option1.setOnAction(event -> addTrackToPlaylist());
+
+//        MenuItem option2 = new MenuItem("Option 2");
+//        option2.setOnAction(event -> handleOption2());
+
+//        contextMenu.getItems().addAll(option1);
+
+        tableTracks.setRowFactory(tv -> {
+            TableRow<Track> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY && !row.isEmpty()) {
+                    Track track = row.getItem(); // Das Track-Objekt der angeklickten Zeile
+
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem option1 = new MenuItem("Add Track");
+                    option1.setOnAction(e -> addTrackToPlaylist(track)); // Übergabe des Track-Objekts
+
+                    contextMenu.getItems().add(option1);
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                }
+            });
+            return row;
+        });
+    }
+
+    private void handleComboBoxSelection() {
+        String selectedPlaylistName = comboBoxPlaylist.getSelectionModel().getSelectedItem();
+        if (selectedPlaylistName != null) {
+            // Finde die ausgewählte Playlist in der Liste
+            Playlist selectedPlaylist = playlistList.stream()
+                    .filter(playlist -> playlist.getName().equals(selectedPlaylistName))
+                    .findFirst()
+                    .orElse(null);
+
+            MyApp.loadedPlaylist = selectedPlaylist;
+        }
+    }
+
+    private void fillComboBoxWithPlaylistNames() {
+        ObservableList<String> playlistNames = FXCollections.observableArrayList();
+
+        for (Playlist playlist : playlistList) {
+            playlistNames.add(playlist.getName());
+            System.out.println(playlist.getName());
+        }
+
+        comboBoxPlaylist.setItems(playlistNames);
     }
 
     public void fillTableFromTrackSearch() {
@@ -144,5 +213,18 @@ public class SearchController {
 
     public void onButtonClearTrackClick(ActionEvent actionEvent) {
         textFilterTrack.setText("");
+    }
+
+    // Select and handle track from Table
+
+    private void addTrackToPlaylist(Track track) {
+        if (!Database.artistExists(track.getArtist())) {
+
+        }
+
+        if (!Database.trackExists(track.getName())) {
+
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package Application;
 
 import Application.Model.APIGetRequest;
+import Application.Model.Playlist;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.net.URL;
 
 public class MyApp extends Application {
+
+    public static Playlist loadedPlaylist;
 
     // Singleton for accessing this class easily from anywhere
     public static MyApp instance;

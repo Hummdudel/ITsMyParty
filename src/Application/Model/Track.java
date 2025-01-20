@@ -10,6 +10,7 @@ public class Track {
     private String artist;
     private String album;
     private String duration;
+    private int priority;
     private int seconds;
 
 
@@ -49,6 +50,13 @@ public class Track {
         this.album = album;
         this.duration = duration;
         seconds = durationToSeconds(duration);
+    }
+
+    public Track(String name, String artist, String duration, int priority) {
+        this.name = name;
+        this.artist = artist;
+        this.duration = duration;
+        this.priority = priority;
     }
 
     public Track() {

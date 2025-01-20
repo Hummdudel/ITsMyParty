@@ -79,7 +79,7 @@ public class Playlist {
         duration = secondsToDuration(seconds);
     }
 
-    public String secondsToDuration(int seconds) {
+    public static String secondsToDuration(int seconds) {
         return String.format("%02d:%02d:%02d", seconds / 360, (seconds % 360) / 60, seconds % 60);
     }
 
