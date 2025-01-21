@@ -21,18 +21,19 @@ public class PlaylistController {
     public Label labelPlaylistDuration;
 
     public TableView<Track> tableTracks;
-    public TableColumn<Track, String> track;
+    public TableColumn<Track, String> name;
     public TableColumn<Track, String> artist;
     public TableColumn<Track, String> duration;
     public TableColumn<Track, Integer> priority;
 
+    private ObservableList<Track> trackList;
     private ObservableList<Playlist> playlistList;
 
     public void initialize() {
         playlistList = Database.readAllPlaylists();
         fillComboBoxWithPlaylistNames();
 
-        track.setCellValueFactory(new PropertyValueFactory<>("track"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
         artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         priority.setCellValueFactory(new PropertyValueFactory<>("priority"));
@@ -57,14 +58,15 @@ public class PlaylistController {
 
             if (selectedPlaylist != null) {
                 // Verwende die Playlist-ID für die Datenbankabfrage
-                ObservableList<Track> tracks = Database.readPlaylistTracks(selectedPlaylist.getId());
-                tableTracks.setItems(tracks);
+                trackList = Database.readPlaylistTracks(selectedPlaylist.getId());
+                tableTracks.setItems(trackList);
 
                 // Aktualisiere die Labels
-                assert tracks != null;
-                labelNumberOfTracks.setText(String.valueOf(tracks.size()));
-                // Berechne die Dauer der Playlist (angenommen, du hast eine Methode dafür)
-                labelPlaylistDuration.setText(selectedPlaylist.getDuration());
+                if (trackList.size() > 0) {
+                    labelNumberOfTracks.setText(String.valueOf(trackList.size()));
+                    // Berechne die Dauer der Playlist (angenommen, du hast eine Methode dafür)
+                    labelPlaylistDuration.setText(selectedPlaylist.getDuration());
+                }
             }
         }
     }

@@ -37,17 +37,16 @@ public class Database {
 
     // Create
 
-    public static void createArtist(Artist artist) {
-        String sql = "{CALL Create_Artist(?, ?)}";
+    public static void createArtist(String name) {
+        String sql = "{CALL Create_Artist(?)}";
         connect();
 
         try {
             callableStatement = connection.prepareCall(sql);
-            callableStatement.setString(1, artist.getName());
-            callableStatement.setString(2, artist.getSlug());
+            callableStatement.setString(1, name);
             callableStatement.execute();
 
-            System.out.println("Artist " + artist.getName() + " wurde erfolgreich angelegt!");
+            System.out.println("Artist " + name + " wurde erfolgreich angelegt!");
         }
         catch (SQLException exception) {
             header = "Create Artist";
@@ -60,16 +59,15 @@ public class Database {
     }
 
     public static void createTrack(Track track) {
-        String sql = "{CALL Create_Track(?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL Create_Track(?, ?, ?, ?)}";
         connect();
 
         try {
             callableStatement = connection.prepareCall(sql);
             callableStatement.setString(1, track.getName());
-            callableStatement.setString(2, track.getSlug());
-            callableStatement.setString(3, track.getArtist());
-            callableStatement.setString(4, track.getDuration());
-            callableStatement.setInt(5, track.getSeconds());
+            callableStatement.setString(2, track.getArtist());
+            callableStatement.setString(3, track.getDuration());
+            callableStatement.setInt(4, track.durationToSeconds(track.getDuration()));
             callableStatement.execute();
 
             System.out.println("Track " + track.getName() + " wurde erfolgreich angelegt!");
@@ -105,8 +103,9 @@ public class Database {
         }
     }
 
-    public static void addTrackToPlaylist(Track track, Playlist playlist) {
-        String sql = "{CALL Add_Track_to_Playlist(?, ?)}";
+    public static void createPlaylistEntry(Track track, Playlist playlist) {
+        String sql = "{CALL Create_Playlist_Entry(?, ?)}";
+        header = "Create Playlist Entry";
         connect();
 
         try {
@@ -115,11 +114,12 @@ public class Database {
             callableStatement.setInt(2, playlist.getId());
             callableStatement.execute();
 
-            System.out.println("Der Track " + track.getName() + " wurde erfolgreich zur Playlist "
-                    + playlist.getName() + " hinzugefügt!");
+            content = "Der Track " + track.getName() + " wurde erfolgreich zur Playlist " + playlist.getName() + " hinzugefügt!";
+            MyApp.instance.showMessage(title, header, content);
+
+            System.out.println(content);
 
         } catch (SQLException exception) {
-            header = "Create Playlist";
             content = exception.getMessage();
             MyApp.instance.showWarning(title, header, content);
         }
@@ -243,6 +243,31 @@ public class Database {
             disconnect();
         }
         return false;
+    }
+
+    public static int readTrackId(String trackName) {
+        String sql = "{CALL Read_Track_ID(?)}";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.setString(1, trackName);
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+            return -1;
+        }
+        catch (SQLException exception) {
+            header = "Read Track ID";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
+        }
+        return -1;
     }
 
     // Update

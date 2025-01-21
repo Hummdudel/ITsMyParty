@@ -17,7 +17,7 @@
       <Label fx:id="labelPlaylistDuration" layoutX="540.0" layoutY="85.0" prefHeight="17.0" prefWidth="60.0" />
       <TableView fx:id="tableTracks" layoutY="140.0" prefHeight="505.0" prefWidth="1000.0">
         <columns>
-          <TableColumn fx:id="track" prefWidth="350.0" text="Track" />
+          <TableColumn fx:id="name" prefWidth="350.0" text="Track" />
           <TableColumn fx:id="artist" minWidth="0.0" prefWidth="350.0" text="Artist" />
             <TableColumn fx:id="duration" prefWidth="150.0" text="Duration" />
             <TableColumn fx:id="priority" prefWidth="84.0" text="Priority" />

@@ -6,7 +6,6 @@ public class Track {
 
     private int id;
     private String name;
-    private String slug;
     private String artist;
     private String album;
     private String duration;
@@ -16,36 +15,32 @@ public class Track {
 
     // Constructor
 
-    public Track(int id, String name, String slug, String artist, String duration) {
+    public Track(int id, String name, String artist, String duration) {
         this.id = id;
         this.name = name;
-        this.slug = slug;
         this.artist = artist;
         this.duration = duration;
         seconds = durationToSeconds(duration);
     }
 
-    public Track(int id, String name, String slug, String artist, String album, String duration) {
+    public Track(int id, String name, String artist, String album, String duration) {
         this.id = id;
         this.name = name;
-        this.slug = slug;
         this.artist = artist;
         this.album = album;
         this.duration = duration;
         seconds = durationToSeconds(duration);
     }
 
-    public Track(String name, String slug, String artist, String duration) {
+    public Track(String name, String artist, String duration) {
         this.name = name;
-        this.slug = slug;
         this.artist = artist;
         this.duration = duration;
         seconds = durationToSeconds(duration);
     }
 
-    public Track(String name, String slug, String artist, String album, String duration) {
+    public Track(String name, String artist, String album, String duration) {
         this.name = name;
-        this.slug = slug;
         this.artist = artist;
         this.album = album;
         this.duration = duration;
@@ -57,6 +52,7 @@ public class Track {
         this.artist = artist;
         this.duration = duration;
         this.priority = priority;
+        seconds = durationToSeconds(duration);
     }
 
     public Track() {
@@ -65,20 +61,20 @@ public class Track {
 
     // Getter + Setter
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
     }
 
     public String getArtist() {
@@ -105,20 +101,20 @@ public class Track {
         this.duration = duration;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     public int getSeconds() {
         return seconds;
     }
 
     public void setSeconds(int seconds) {
         this.seconds = seconds;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
 
@@ -131,7 +127,6 @@ public class Track {
 
     public void showdetails() {
         System.out.println("Name: " + name);
-        System.out.println("Slug: " + slug);
         System.out.println("Artist: " + artist);
         System.out.println("Duration: " + duration);
         System.out.println("Seconds: " + seconds);

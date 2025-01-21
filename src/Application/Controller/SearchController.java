@@ -47,7 +47,7 @@ public class SearchController {
 
         comboBoxPlaylist.setOnAction(event -> handleComboBoxSelection());
 
-        // Set die CellValueFactory for each column
+        // Set CellValueFactory for each column
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         album.setCellValueFactory(new PropertyValueFactory<>("album"));
@@ -205,13 +205,17 @@ public class SearchController {
     // Select and handle track from Table
 
     private void addTrackToPlaylist(Track track) {
-        if (!Database.artistExists(track.getArtist())) {
 
+        if (!Database.artistExists(track.getArtist())) {
+            Database.createArtist(track.getArtist());
         }
 
         if (!Database.trackExists(track.getName())) {
-
+            Database.createTrack(track);
         }
 
+        track.setId(Database.readTrackId(track.getName()));
+
+        Database.createPlaylistEntry(track, MyApp.loadedPlaylist);
     }
 }

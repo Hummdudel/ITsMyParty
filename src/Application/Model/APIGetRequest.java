@@ -82,7 +82,7 @@ public class APIGetRequest {
                             String artist = trackObject.getJSONObject("album").getJSONObject("artist").getString("name");
                             String album = trackObject.getJSONObject("album").getString("name");
 
-                            Track track = new Track(trackName, slug, artist, album, duration);
+                            Track track = new Track(trackName, artist, album, duration);
                             trackList.add(track);
                         }
                     }
@@ -107,7 +107,7 @@ public class APIGetRequest {
                                 String slug = trackObject.getString("slug");
                                 String duration = trackObject.getString("duration");
 
-                                Track track = new Track(trackName, slug, artist, album, duration);
+                                Track track = new Track(trackName, artist, album, duration);
                                 trackList.add(track);
                             }
                         }

@@ -85,4 +85,12 @@ public class MyApp extends Application {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    public void showMessage(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }

@@ -4,16 +4,13 @@ public class Artist {
 
     private int id;
     private String name;
-    private String slug;
 
-    public Artist(int id, String name, String slug) {
+    public Artist(int id, String name) {
         this.id = id;
         this.name = name;
-        this.slug = slug;
     }
 
-    public Artist(String slug, String name) {
-        this.slug = slug;
+    public Artist(String name) {
         this.name = name;
     }
 
@@ -36,11 +33,4 @@ public class Artist {
         this.name = name;
     }
 
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
 }
