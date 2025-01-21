@@ -117,27 +117,25 @@ public class SearchController {
     }
 
     public void fillTableFromTrackSearch() {
-
-        ArrayList<Track> trackList = new ArrayList<>();
-
-        if (!(textSearchTrack.getText().equals(""))) {
-            String trackName =  textSearchTrack.getText();
-
-            trackList = APIGetRequest.getTrackList(trackName);
-
-            this.trackList.clear();
-            this.trackList.addAll(trackList);
-        }
+        fillTable(textSearchTrack.getText());
     }
 
     public void fillTableFromArtistSearch() {
+        fillTable(textSearchArtist.getText());
+    }
 
+    private void fillTable(String keyword) {
         ArrayList<Track> trackList = new ArrayList<>();
 
-        if (!(textSearchArtist.getText().equals(""))) {
-            String artistName =  textSearchArtist.getText();
-
-            trackList = APIGetRequest.getArtistTrackList(artistName);
+        if (!(keyword.equals(""))) {
+            if (keyword.equals(textSearchArtist.getText())) {
+                String artistName =  textSearchArtist.getText();
+                trackList = APIGetRequest.getTrackListByArtistName(artistName);
+            }
+            else if (keyword.equals(textSearchTrack.getText())) {
+                String trackName =  textSearchTrack.getText();
+                trackList = APIGetRequest.getTrackListByTrackname(trackName);
+            }
 
             this.trackList.clear();
             this.trackList.addAll(trackList);
@@ -145,25 +143,14 @@ public class SearchController {
     }
 
     public void filterArtist() {
-        String keyword = textFilterArtist.getText();
-
-        if (keyword.equals("")) {
-            tableTracks.setItems(trackList);
-        }
-        else {
-            ObservableList<Track> filteredData = FXCollections.observableArrayList();
-            for (Track track : trackList) {
-                if (track.getArtist().toLowerCase().contains(keyword.toLowerCase())) {
-                    filteredData.add(track);
-                }
-            }
-            tableTracks.setItems(filteredData);
-        }
+        filter(textFilterArtist.getText());
     }
 
     public void filterTrack() {
-        String keyword = textFilterTrack.getText();
+        filter(textFilterTrack.getText());
+    }
 
+    private void filter(String keyword) {
         if (keyword.equals("")) {
             tableTracks.setItems(trackList);
         }
