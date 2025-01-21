@@ -270,6 +270,33 @@ public class Database {
         return -1;
     }
 
+    public static Playlist readPlaylist(String playlistName) {
+        String sql = "{CALL Read_Playlist(?)}";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.setString(1, playlistName);
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                Playlist playlist = new Playlist(id, playlistName);
+                return playlist;
+            }
+            return null;
+        }
+        catch (SQLException exception) {
+            header = "Read Playlist";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
+        }
+        return null;
+    }
+
     // Update
 
     // Delete

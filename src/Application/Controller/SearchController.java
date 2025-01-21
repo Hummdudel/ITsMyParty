@@ -143,22 +143,29 @@ public class SearchController {
     }
 
     public void filterArtist() {
-        filter(textFilterArtist.getText());
+        filter(textFilterArtist.getText(), "artist");
     }
 
     public void filterTrack() {
-        filter(textFilterTrack.getText());
+        filter(textFilterTrack.getText(), "track");
     }
 
-    private void filter(String keyword) {
+    private void filter(String keyword, String filterType) {
         if (keyword.equals("")) {
             tableTracks.setItems(trackList);
         }
         else {
             ObservableList<Track> filteredData = FXCollections.observableArrayList();
             for (Track track : trackList) {
-                if (track.getName().toLowerCase().contains(keyword.toLowerCase())) {
-                    filteredData.add(track);
+                if (filterType.equals("track")) {
+                    if (track.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                        filteredData.add(track);
+                    }
+                }
+                else if (filterType.equals("artist")) {
+                    if (track.getArtist().toLowerCase().contains(keyword.toLowerCase())) {
+                        filteredData.add(track);
+                    }
                 }
             }
             tableTracks.setItems(filteredData);

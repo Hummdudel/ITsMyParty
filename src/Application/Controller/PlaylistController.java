@@ -40,6 +40,7 @@ public class PlaylistController {
 
         if (MyApp.loadedPlaylist != null) {
             comboBoxPlaylist.setValue(MyApp.loadedPlaylist.getName());
+            handleComboBoxSelection();
         }
 
         comboBoxPlaylist.setOnAction(event -> handleComboBoxSelection());
@@ -65,7 +66,7 @@ public class PlaylistController {
                 if (trackList.size() > 0) {
                     labelNumberOfTracks.setText(String.valueOf(trackList.size()));
                     // Berechne die Dauer der Playlist (angenommen, du hast eine Methode dafür)
-                    labelPlaylistDuration.setText(selectedPlaylist.getDuration());
+                    labelPlaylistDuration.setText(calculateDuration(trackList));
                 }
             }
         }
@@ -80,5 +81,17 @@ public class PlaylistController {
         }
 
         comboBoxPlaylist.setItems(playlistNames);
+    }
+
+    private String calculateDuration(ObservableList<Track> trackList) {
+        int sumSeconds = 0;
+        for (Track track : trackList) {
+            sumSeconds += track.getSeconds();
+        }
+        return secondsToDuration(sumSeconds);
+    }
+
+    private String secondsToDuration(int seconds) {
+        return String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
     }
 }

@@ -34,7 +34,7 @@ public class APIGetRequest {
 
         ArrayList<Track> trackList = new ArrayList<>();
 
-        String query = name.replace("-", "").replace(" ", "-").toLowerCase();
+        String query = name.replaceAll("[-_:;,&]", "").replace(" ", "-").toLowerCase();
         String additionalInfo = "";
 
         if (queryType.equals(queryTrack)) {

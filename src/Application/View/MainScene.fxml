@@ -17,6 +17,7 @@
           <Menu mnemonicParsing="false" text="Playlists">
             <items>
               <MenuItem fx:id="menuPlaylists" mnemonicParsing="false" onAction="#onMenuPlaylistsClick" text="Playlists" />
+                  <MenuItem fx:id="menuNewPlaylist" mnemonicParsing="false" onAction="#onMenuNewPlaylistClick" text="New Playlist" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="About">

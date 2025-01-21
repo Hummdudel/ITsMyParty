@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 public class MyApp extends Application {
 
@@ -92,5 +94,22 @@ public class MyApp extends Application {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public String showInputDialog(String title, String header, String content) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(content);
+
+        // Zeige den Dialog und warte auf die Eingabe
+        Optional<String> result = dialog.showAndWait();
+
+        // Überprüfe, ob der OK-Button gedrückt wurde
+        if (result.isPresent()) {
+            return result.get(); // Rückgabe des eingegebenen Textes
+        } else {
+            return null; // Der Dialog wurde abgebrochen
+        }
     }
 }
