@@ -12,6 +12,7 @@
    <children>
       <Label layoutX="20.0" layoutY="55.0" text="Playlist" />
       <ComboBox fx:id="comboBoxPlaylist" layoutX="85.0" layoutY="50.0" prefHeight="26.0" prefWidth="291.0" />
+      <Button fx:id="buttonToPlaylists" layoutX="440.0" layoutY="50.0" mnemonicParsing="false" onAction="#onButtonToPlaylistsClick" text="Manage playlists" />
       <Label layoutX="20.0" layoutY="155.0" text="Track" />
       <TextField fx:id="textSearchTrack" layoutX="70.0" layoutY="150.0" onKeyPressed="#handleEnterPressed" prefHeight="26.0" prefWidth="318.0" />
       <Button fx:id="buttonClearTrackSearch" layoutX="400.0" layoutY="150.0" mnemonicParsing="false" onAction="#onButtonClearTrackSearchClick" text="X" />

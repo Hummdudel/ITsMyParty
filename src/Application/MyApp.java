@@ -3,6 +3,7 @@ package Application;
 import Application.Model.APIGetRequest;
 import Application.Model.Playlist;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -11,8 +12,10 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -81,6 +84,11 @@ public class MyApp extends Application {
         borderPane.setCenter(pane);
     }
 
+    public void shutdown() {
+        Platform.exit();
+        System.exit(0);
+    }
+
     public void showWarning(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -130,5 +138,22 @@ public class MyApp extends Application {
         else {
             return -1;
         }
+    }
+
+    public File showSaveFileDialog() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Datei speichern");
+
+        // Optional: Setze einen Standard-Dateinamen oder ein Verzeichnis
+        fileChooser.setInitialFileName("neuePlaylist.txt");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Desktop"));
+
+        // Optional: Filtere die Dateitypen, die angezeigt werden
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textdateien (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Zeige den Speichern-Dialog und erhalte die ausgewählte Datei
+        File file = fileChooser.showSaveDialog(instance.primaryStage);
+        return file;
     }
 }

@@ -9,20 +9,22 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Search">
+          <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="IT’s My Party">
             <items>
-              <MenuItem fx:id="menuSearch" mnemonicParsing="false" onAction="#onMenuSearchClick" text="Search" />
+              <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAbout" text="About" />
+                  <MenuItem fx:id="menuQuit" mnemonicParsing="false" onAction="#onMenuQuit" text="Quit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Playlists">
             <items>
-              <MenuItem fx:id="menuPlaylists" mnemonicParsing="false" onAction="#onMenuPlaylistsClick" text="Playlists" />
+              <MenuItem fx:id="menuPlaylists" mnemonicParsing="false" onAction="#onMenuPlaylistsClick" text="Manage Playlists" />
                   <MenuItem fx:id="menuNewPlaylist" mnemonicParsing="false" onAction="#onMenuNewPlaylistClick" text="New Playlist" />
+                  <MenuItem fx:id="menuSavePlaylist" mnemonicParsing="false" onAction="#onMenuSavePlaylist" text="Save Playlist" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="About">
+          <Menu mnemonicParsing="false" text="Search">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="menuSearch" mnemonicParsing="false" onAction="#onMenuSearchClick" text="Search" />
             </items>
           </Menu>
         </menus>

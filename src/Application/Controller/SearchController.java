@@ -218,4 +218,8 @@ public class SearchController {
 
         Database.createPlaylistEntry(track, MyApp.loadedPlaylist);
     }
+
+    public void onButtonToPlaylistsClick(ActionEvent actionEvent) {
+        MyApp.instance.showView("PlaylistView");
+    }
 }

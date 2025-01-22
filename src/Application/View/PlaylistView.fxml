@@ -11,8 +11,10 @@
    <children>
       <Label layoutX="20.0" layoutY="55.0" text="Playlist" />
       <ComboBox fx:id="comboBoxPlaylist" layoutX="85.0" layoutY="50.0" prefHeight="26.0" prefWidth="291.0" />
-      <Button fx:id="buttonNewPlaylist" layoutX="780.0" layoutY="50.0" mnemonicParsing="false" onAction="#onButtonNewPlaylistClick" text="New Playlist" />
-      <Button fx:id="buttonDeletePlaylist" layoutX="891.0" layoutY="50.0" mnemonicParsing="false" onAction="#onButtonDeletePlaylistClick" text="Delete Playlist" />
+      <Button fx:id="buttonToSearch" layoutX="85.0" layoutY="95.0" mnemonicParsing="false" onAction="#onButtonToSearchClick" text="Search for new tracks" />
+      <Button fx:id="buttonNewPlaylist" layoutX="780.0" layoutY="50.0" mnemonicParsing="false" onAction="#onButtonNewPlaylistClick" style="-fx-background-color: green;" text="New Playlist" textFill="WHITE" />
+      <Button fx:id="buttonDeletePlaylist" layoutX="891.0" layoutY="50.0" mnemonicParsing="false" onAction="#onButtonDeletePlaylistClick" style="-fx-background-color: red;" text="Delete Playlist" textFill="WHITE" />
+      <Button fx:id="buttonSavePlaylist" layoutX="780.0" layoutY="95.0" mnemonicParsing="false" onAction="#onButtonSavePlaylistClick" text="Save Playlist to File" />
       <Label layoutX="448.0" layoutY="55.0" text="Tracks:" />
       <Label fx:id="labelNumberOfTracks" layoutX="540.0" layoutY="55.0" prefHeight="17.0" prefWidth="40.0" />
       <Label layoutX="448.0" layoutY="85.0" text="Duration:" />

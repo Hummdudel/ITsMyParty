@@ -1,6 +1,7 @@
 package Application.Controller;
 
 import Application.Model.Database;
+import Application.Model.FileUtilities;
 import Application.Model.Playlist;
 import Application.Model.Track;
 import Application.MyApp;
@@ -150,13 +151,17 @@ public class PlaylistController {
     }
 
     public void onButtonDeletePlaylistClick(ActionEvent actionEvent) {
-        header = "Delete Playlist";
-        content = "Soll die Playlist " + MyApp.loadedPlaylist.getName() + " wirklich gelöscht werden?";
-        int choice =  MyApp.instance.showConfirmation(title, header, content);
-        if (choice == 1) {
-            Database.deletePlaylist(MyApp.loadedPlaylist);
-            MyApp.instance.showView("PlaylistView");
+        if (MyApp.loadedPlaylist != null) {
+            header = "Delete Playlist";
+            content = "Soll die Playlist " + MyApp.loadedPlaylist.getName() + " wirklich gelöscht werden?";
+            int choice =  MyApp.instance.showConfirmation(title, header, content);
+            if (choice == 1) {
+                Database.deletePlaylist(MyApp.loadedPlaylist);
+                MyApp.loadedPlaylist = null;
+                MyApp.instance.showView("PlaylistView");
+            }
         }
+
     }
 
     public void onButtonNewPlaylistClick(ActionEvent actionEvent) {
@@ -170,5 +175,13 @@ public class PlaylistController {
             MyApp.loadedPlaylist = Database.readPlaylist(playlistName);
             MyApp.instance.showView("PlaylistView");
         }
+    }
+
+    public void onButtonSavePlaylistClick(ActionEvent actionEvent) {
+        FileUtilities.writeTracksToFile();
+    }
+
+    public void onButtonToSearchClick(ActionEvent actionEvent) {
+        MyApp.instance.showView("SearchView");
     }
 }
