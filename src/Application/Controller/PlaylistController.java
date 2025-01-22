@@ -6,15 +6,19 @@ import Application.Model.Track;
 import Application.MyApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.event.ActionEvent;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 
 import java.util.ArrayList;
 
 public class PlaylistController {
+
+    private String title = "Playlist Controller";
+    private static String header;
+    private static String content;
+
     public ComboBox<String> comboBoxPlaylist = new ComboBox<>();
 
     public Label labelNumberOfTracks;
@@ -30,13 +34,11 @@ public class PlaylistController {
     private ObservableList<Playlist> playlistList;
 
     public void initialize() {
+
+        // ComboBox
+
         playlistList = Database.readAllPlaylists();
         fillComboBoxWithPlaylistNames();
-
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        priority.setCellValueFactory(new PropertyValueFactory<>("priority"));
 
         if (MyApp.loadedPlaylist != null) {
             comboBoxPlaylist.setValue(MyApp.loadedPlaylist.getName());
@@ -44,6 +46,36 @@ public class PlaylistController {
         }
 
         comboBoxPlaylist.setOnAction(event -> handleComboBoxSelection());
+
+        // Tracklist Table
+
+        // Set CellValueFactory for each column
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        priority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+
+        // Context menu for Table
+
+        tableTracks.setRowFactory(tv -> {
+            TableRow<Track> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY && !row.isEmpty()) {
+                    Track track = row.getItem(); // Das Track-Objekt der angeklickten Zeile
+
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem optionRemoveTrack = new MenuItem("Remove Track");
+                    optionRemoveTrack.setOnAction(event1 -> removeTrackFromPlaylist(track)); // Übergabe des Track-Objekts
+                    MenuItem optionUpdatePriority = new MenuItem("Update Priority");
+                    optionUpdatePriority.setOnAction(event1 -> updatePiority(track)); // Übergabe des Track-Objekts
+
+                    contextMenu.getItems().add(optionRemoveTrack);
+                    contextMenu.getItems().add(optionUpdatePriority);
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                }
+            });
+            return row;
+        });
     }
 
     private void handleComboBoxSelection() {
@@ -77,10 +109,32 @@ public class PlaylistController {
 
         for (Playlist playlist : playlistList) {
             playlistNames.add(playlist.getName());
-            System.out.println(playlist.getName());
         }
 
         comboBoxPlaylist.setItems(playlistNames);
+    }
+
+    private void removeTrackFromPlaylist(Track track) {
+        track.setId(Database.readTrackId(track.getName()));
+        Database.deletePlaylistEntry(track, MyApp.loadedPlaylist);
+        MyApp.instance.showView("PlaylistView");
+    }
+
+    private void updatePiority(Track track) {
+        String newPriorityString = MyApp.instance.showInputDialog("Playlists", "New Playlist", "Priorität (Zahl):");
+        if (newPriorityString != null) {
+            try {
+                int newPriority = Integer.parseInt(newPriorityString);
+                track.setId(Database.readTrackId(track.getName()));
+                Database.updatePriority(newPriority, track, MyApp.loadedPlaylist);
+                MyApp.instance.showView("PlaylistView");
+            }
+            catch (NumberFormatException exception) {
+                header = "Update Priority";
+                content = "Ungültige Eingabe! Bitte geben Sie eine gültige Zahl ein.";
+                MyApp.instance.showWarning(title, header, content);
+            }
+        }
     }
 
     private String calculateDuration(ObservableList<Track> trackList) {
@@ -93,5 +147,28 @@ public class PlaylistController {
 
     private String secondsToDuration(int seconds) {
         return String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+    }
+
+    public void onButtonDeletePlaylistClick(ActionEvent actionEvent) {
+        header = "Delete Playlist";
+        content = "Soll die Playlist " + MyApp.loadedPlaylist.getName() + " wirklich gelöscht werden?";
+        int choice =  MyApp.instance.showConfirmation(title, header, content);
+        if (choice == 1) {
+            Database.deletePlaylist(MyApp.loadedPlaylist);
+            MyApp.instance.showView("PlaylistView");
+        }
+    }
+
+    public void onButtonNewPlaylistClick(ActionEvent actionEvent) {
+        createNewPlaylist();
+    }
+
+    public static void createNewPlaylist() {
+        String playlistName = MyApp.instance.showInputDialog("Playlists", "New Playlist", "Name:");
+        if (!playlistName.equals("")) {
+            Database.createPlaylist(playlistName);
+            MyApp.loadedPlaylist = Database.readPlaylist(playlistName);
+            MyApp.instance.showView("PlaylistView");
+        }
     }
 }

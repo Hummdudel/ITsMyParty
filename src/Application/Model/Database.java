@@ -24,7 +24,6 @@ public class Database {
     public static void connect() {
         try {
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Verbindung erfolgreich hergestellt!");
         }
         catch (SQLException exception) {
             header = "DB Connection";
@@ -46,7 +45,6 @@ public class Database {
             callableStatement.setString(1, name);
             callableStatement.execute();
 
-            System.out.println("Artist " + name + " wurde erfolgreich angelegt!");
         }
         catch (SQLException exception) {
             header = "Create Artist";
@@ -70,7 +68,6 @@ public class Database {
             callableStatement.setInt(4, track.durationToSeconds(track.getDuration()));
             callableStatement.execute();
 
-            System.out.println("Track " + track.getName() + " wurde erfolgreich angelegt!");
         }
         catch (SQLException exception) {
             header = "Create Track";
@@ -91,7 +88,6 @@ public class Database {
             callableStatement.setString(1, name);
             callableStatement.execute();
 
-            System.out.println("Playlist " + name + " erfolgreich angelegt!");
         }
         catch (SQLException exception) {
             header = "Create Playlist";
@@ -116,8 +112,6 @@ public class Database {
 
             content = "Der Track " + track.getName() + " wurde erfolgreich zur Playlist " + playlist.getName() + " hinzugefügt!";
             MyApp.instance.showMessage(title, header, content);
-
-            System.out.println(content);
 
         } catch (SQLException exception) {
             content = exception.getMessage();
@@ -299,7 +293,76 @@ public class Database {
 
     // Update
 
+    public static void updatePriority(int priority, Track track, Playlist playlist) {
+        String sql = "{CALL Update_Priority(?, ?, ?)}";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.setInt(1, priority);
+            callableStatement.setInt(2, track.getId());
+            callableStatement.setInt(3, playlist.getId());
+            callableStatement.execute();
+
+        }
+        catch (SQLException exception) {
+            header = "Update Priority";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
+        }
+    }
+
     // Delete
+
+    public static void deletePlaylistEntry(Track track, Playlist playlist) {
+        String sql = "{CALL Delete_Playlist_Entry(?, ?)}";
+        header = "Delete Playlist Entry";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.setInt(1, track.getId());
+            callableStatement.setInt(2, playlist.getId());
+            callableStatement.execute();
+
+            content = "Der Track " + track.getName() + " wurde erfolgreich aus der Playlist " + playlist.getName() + " gelöscht!";
+            MyApp.instance.showMessage(title, header, content);
+
+        }
+        catch (SQLException exception) {
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
+        }
+    }
+
+    public static void deletePlaylist(Playlist playlist) {
+        String sql = "{CALL Delete_Playlist(?)}";
+        header = "Delete Playlist";
+        connect();
+
+        try {
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.setInt(1, playlist.getId());
+            callableStatement.execute();
+
+            content = "Die Playlist " + playlist.getName() + " wurde erfolgreich gelöscht!";
+            MyApp.instance.showMessage(title, header, content);
+
+        }
+        catch (SQLException exception) {
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
+        }
+        finally {
+            disconnect();
+        }
+    }
 
 
     // 4. Disconnect from Database
@@ -308,7 +371,9 @@ public class Database {
         try {
             connection.close();
         } catch (SQLException exception) {
-            System.out.println(exception.getMessage());
+            header = "Disconnect from Database";
+            content = exception.getMessage();
+            MyApp.instance.showWarning(title, header, content);
         }
     }
 }

@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -110,6 +111,24 @@ public class MyApp extends Application {
             return result.get(); // Rückgabe des eingegebenen Textes
         } else {
             return null; // Der Dialog wurde abgebrochen
+        }
+    }
+
+    public int showConfirmation(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, title, ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            return 1;
+        }
+        else if (alert.getResult() == ButtonType.NO) {
+            return 0;
+        }
+        else {
+            return -1;
         }
     }
 }

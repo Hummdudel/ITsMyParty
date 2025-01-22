@@ -38,6 +38,8 @@ public class SearchController {
     @FXML
     public void initialize() {
 
+        // ComboBox
+
         playlistList = Database.readAllPlaylists();
         fillComboBoxWithPlaylistNames();
 
@@ -46,6 +48,8 @@ public class SearchController {
         }
 
         comboBoxPlaylist.setOnAction(event -> handleComboBoxSelection());
+
+        // Search Table
 
         // Set CellValueFactory for each column
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -64,16 +68,6 @@ public class SearchController {
 
         // Context menu for Table
 
-//        ContextMenu contextMenu = new ContextMenu();
-//
-//        MenuItem option1 = new MenuItem("Add Track");
-//        option1.setOnAction(event -> addTrackToPlaylist());
-
-//        MenuItem option2 = new MenuItem("Option 2");
-//        option2.setOnAction(event -> handleOption2());
-
-//        contextMenu.getItems().addAll(option1);
-
         tableTracks.setRowFactory(tv -> {
             TableRow<Track> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -81,10 +75,10 @@ public class SearchController {
                     Track track = row.getItem(); // Das Track-Objekt der angeklickten Zeile
 
                     ContextMenu contextMenu = new ContextMenu();
-                    MenuItem option1 = new MenuItem("Add Track");
-                    option1.setOnAction(e -> addTrackToPlaylist(track)); // Übergabe des Track-Objekts
+                    MenuItem optionAddTrack = new MenuItem("Add Track");
+                    optionAddTrack.setOnAction(e -> addTrackToPlaylist(track)); // Übergabe des Track-Objekts
 
-                    contextMenu.getItems().add(option1);
+                    contextMenu.getItems().add(optionAddTrack);
                     contextMenu.show(row, event.getScreenX(), event.getScreenY());
                 }
             });
@@ -110,7 +104,6 @@ public class SearchController {
 
         for (Playlist playlist : playlistList) {
             playlistNames.add(playlist.getName());
-            System.out.println(playlist.getName());
         }
 
         comboBoxPlaylist.setItems(playlistNames);
