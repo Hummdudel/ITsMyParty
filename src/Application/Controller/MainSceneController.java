@@ -30,7 +30,8 @@ public class MainSceneController {
     public void onMenuAbout(ActionEvent actionEvent) {
         String title = "IT’s My Party!";
         String header = "About";
-        String content = "Version 1.0\nby Lars Lachmann\nThanks to Mr. Sahin, the best development teacher!\nUsed API: https://musicdb.io/api";
+        String content = "Version 1.0\nby Lars Lachmann\nThanks to Mr. Sahin, the best development teacher and mentor!\n" +
+                "Used API: https://musicdb.io/api";
         MyApp.instance.showMessage(title, header, content);
     }
 }
